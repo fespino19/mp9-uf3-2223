@@ -1,5 +1,6 @@
 package mp9.uf3.urls;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -12,18 +13,26 @@ import java.util.logging.Logger;
 
 public class TestApunts {
 
-    private static void printContent(URL url){
+
+
+    private static void printContent(URL url, String etiqueta){
         InputStream in;
-        char[] cbuf = new char[512];
-        int caractersLlegits;
+        BufferedReader br;
 
 
         try {
             in = url.openStream();
             InputStreamReader inr = new InputStreamReader(in);
-            while((caractersLlegits=inr.read(cbuf))!=-1){
-                String str = String.copyValueOf(cbuf, 0, caractersLlegits);
-                System.out.print(str);
+
+            br = new BufferedReader(inr);
+
+            String linea = br.readLine();
+
+            while (linea != null){
+                if (linea.contains(etiqueta)){
+                    System.out.println(linea);
+                }
+                linea = br.readLine();
             }
             System.out.println();
         } catch (IOException ex) {
@@ -32,10 +41,13 @@ public class TestApunts {
     }
 
     public static void main(String[] args) {
+        String enllaç = "https://elpuig.xeill.net";
+        String etiqueta = "html";
         try {
-            TestApunts.printContent(new URL("https://elpuig.xeill.net"));
+            TestApunts.printContent(new URL(enllaç),etiqueta);
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
     }
 }
+
